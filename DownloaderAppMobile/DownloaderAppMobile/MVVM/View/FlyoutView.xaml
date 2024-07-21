@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="DownloaderAppMobile.MVVM.View.FlyoutView"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:hlp="clr-namespace:DownloaderAppMobile.Helpers"
+             xmlns:vm="clr-namespace:DownloaderAppMobile.MVVM.ViewModel"
+             Title="Flyout"
+             BackgroundColor="{StaticResource DarkPrimaryColor}">
+
+    <ContentPage.BindingContext>
+
+        <vm:FlyoutVM />
+
+    </ContentPage.BindingContext>
+
+    <StackLayout>
+
+        <ListView BackgroundColor="Transparent"
+                  ItemsSource="{Binding Menu}"
+                  RowHeight="60"
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}">
+
+            <ListView.Behaviors>
+
+                <hlp:EventToCommandBehavior Command="{Binding MenuItemSelectedCommand}"
+                                            EventName="ItemSelected" />
+
+            </ListView.Behaviors>
+
+            <ListView.Header>
+
+                <Frame BackgroundColor="Transparent">
+
+                    <Label FontSize="32"
+                           HorizontalOptions="Center"
+                           Text="Menu"
+                           TextColor="{StaticResource DarkSecondaryColor}" />
+
+                </Frame>
+
+            </ListView.Header>
+
+            <ListView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <ViewCell>
+
+                        <StackLayout Padding="16,0"
+                                     Orientation="Horizontal"
+                                     Spacing="12">
+
+                            <Image Margin="8,0,0,0"
+                                   Source="{Binding ImageSource}" />
+
+                            <Label FontSize="18"
+                                   Text="{Binding Title}"
+                                   TextColor="{StaticResource DarkSecondaryColor}"
+                                   VerticalTextAlignment="Center" />
+
+                            <Label HorizontalOptions="EndAndExpand"
+                                   Text="&#x27E9;"
+                                   TextColor="LightGray"
+                                   VerticalOptions="Center" />
+
+                        </StackLayout>
+
+                    </ViewCell>
+
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+    </StackLayout>
+
+</ContentPage>

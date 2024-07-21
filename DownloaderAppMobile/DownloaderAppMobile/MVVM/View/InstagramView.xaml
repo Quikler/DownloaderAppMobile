@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="DownloaderAppMobile.MVVM.View.InstagramView"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DownloaderAppMobile.Controls"
+             xmlns:hlp="clr-namespace:DownloaderAppMobile.Helpers"
+             xmlns:model="clr-namespace:DownloaderAppMobile.MVVM.Model"
+             xmlns:vm="clr-namespace:DownloaderAppMobile.MVVM.ViewModel"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             BackgroundColor="{StaticResource DarkPrimaryColor}">
+
+    <ContentPage.BindingContext>
+
+        <vm:InstagramVM />
+
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+
+        <StackLayout Margin="16,8">
+
+            <StackLayout Margin="0,8,0,0"
+                         Orientation="Horizontal">
+
+                <Button BackgroundColor="{StaticResource DarkSecondaryColor}"
+                        Command="{Binding OpenSocialMediaCommand}"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Open instagram"
+                        TextColor="{StaticResource DarkTertiaryColor}" />
+
+            </StackLayout>
+
+            <Grid Margin="0,8">
+
+                <Image HeightRequest="128"
+                       HorizontalOptions="Center"
+                       Source="instagram"
+                       WidthRequest="128" />
+
+                <ImageButton BackgroundColor="Transparent"
+                             Command="{Binding ClipboardClickCommand}"
+                             HorizontalOptions="End"
+                             Source="clipboard"
+                             VerticalOptions="End" />
+
+                <ActivityIndicator HorizontalOptions="Start"
+                                   IsRunning="{Binding IsActivityIndicatorRunning}"
+                                   VerticalOptions="End"
+                                   Color="{StaticResource DarkSecondaryColor}" />
+
+            </Grid>
+
+            <controls:CustomEntry Padding="48,32"
+                                  BackgroundColor="{StaticResource DarkSecondaryColor}"
+                                  CompoundDrawablePadding="48"
+                                  LeftIcon="magnifier_glass"
+                                  Placeholder="Enter download url"
+                                  PlaceholderColor="DarkGray"
+                                  RightIcon="close_icon"
+                                  Text="{Binding EntryText, Mode=TwoWay}"
+                                  TextColor="{StaticResource DarkTertiaryColor}">
+
+                <controls:CustomEntry.Behaviors>
+
+                    <hlp:EventToCommandBehavior Command="{Binding EntryTextChangedCommand}"
+                                                EventName="TextChanged" />
+
+                </controls:CustomEntry.Behaviors>
+
+            </controls:CustomEntry>
+
+            <Button Margin="0,8"
+                    Padding="24,0"
+                    BackgroundColor="{StaticResource DarkSecondaryColor}"
+                    Command="{Binding ActionButtonClickCommand}"
+                    FontSize="16"
+                    HorizontalOptions="End"
+                    IsEnabled="{Binding IsActionButtonEnabled}"
+                    Style="{StaticResource DefaultButtonStyle}"
+                    Text="{Binding DownloadButtonText}"
+                    TextTransform="Uppercase" />
+
+            <Frame Padding="0"
+                   xct:ShadowEffect.Color="Black"
+                   BackgroundColor="{StaticResource DarkTertiaryColor}"
+                   BorderColor="Black">
+
+
+                <StackLayout HeightRequest="300">
+
+                    <controls:MediaCarousel IndicatorView="indicatorView"
+                                            IsScrollAnimated="False"
+                                            ItemsSource="{Binding ItemsSource}"
+                                            Loop="False"
+                                            SelectedViews="{Binding SelectedViews}" />
+
+                    <IndicatorView x:Name="indicatorView"
+                                   Padding="0,6"
+                                   IndicatorColor="{StaticResource DarkPrimaryColor}"
+                                   IndicatorSize="12"
+                                   SelectedIndicatorColor="{StaticResource DarkSecondaryColor}" />
+
+                </StackLayout>
+
+            </Frame>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+
+</ContentPage>

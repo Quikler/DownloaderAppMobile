@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Style x:Key="DefaultButtonStyle"
+           TargetType="Button">
+        
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            
+            <VisualStateGroupList>
+                
+                <VisualStateGroup x:Name="CommonStates">
+                    
+                    <VisualState x:Name="Normal">
+                        
+                        <VisualState.Setters>
+                            
+                            <Setter Property="TextColor" Value="{StaticResource DarkTertiaryColor}" />
+                            
+                        </VisualState.Setters>
+                        
+                    </VisualState>
+                    
+                    <VisualState x:Name="Disabled">
+                        
+                        <VisualState.Setters>
+                            
+                            <Setter Property="TextColor" Value="DarkGray" />
+                            
+                        </VisualState.Setters>
+                        
+                    </VisualState>
+                    
+                </VisualStateGroup>
+                
+            </VisualStateGroupList>
+            
+        </Setter>
+        
+    </Style>
+
+</ResourceDictionary>

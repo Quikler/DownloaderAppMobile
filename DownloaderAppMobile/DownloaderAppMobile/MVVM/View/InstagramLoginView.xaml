@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="DownloaderAppMobile.MVVM.View.InstagramLoginView"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DownloaderAppMobile.Controls"
+             xmlns:hlp="clr-namespace:DownloaderAppMobile.Helpers"
+             xmlns:vm="clr-namespace:DownloaderAppMobile.MVVM.ViewModel"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             BackgroundColor="{StaticResource DarkPrimaryColor}">
+
+    <ContentPage.BindingContext>
+
+        <vm:InstagramLoginVM />
+
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+
+        <StackLayout Margin="16,8">
+
+            <StackLayout Margin="0,8,0,0">
+
+                <Button BackgroundColor="{StaticResource DarkSecondaryColor}"
+                        IsEnabled="False"
+                        Text="{Binding LoginState, StringFormat='Login State: {0}'}"
+                        TextColor="{StaticResource DarkTertiaryColor}">
+
+                    <Button.Style>
+
+                        <Style TargetType="Button">
+
+                            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                                <VisualStateGroupList>
+
+                                    <VisualStateGroup x:Name="CommonStates">
+
+                                        <VisualState x:Name="Disabled">
+
+                                            <VisualState.Setters>
+
+                                                <Setter Property="TextColor" Value="{StaticResource DarkTertiaryColor}" />
+
+                                            </VisualState.Setters>
+
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+
+                                </VisualStateGroupList>
+
+                            </Setter>
+
+                        </Style>
+
+                    </Button.Style>
+
+                </Button>
+
+            </StackLayout>
+
+            <Grid Margin="0,8">
+
+                <Image HeightRequest="128"
+                       HorizontalOptions="Center"
+                       Source="login"
+                       WidthRequest="128" />
+
+                <ActivityIndicator HorizontalOptions="Start"
+                                   IsRunning="{Binding IsActivityIndicatorRunning}"
+                                   VerticalOptions="End"
+                                   Color="{StaticResource DarkSecondaryColor}" />
+
+            </Grid>
+
+            <StackLayout>
+
+                <controls:CustomEntry x:Name="usernameEntry" ReturnType="Next"
+                                      Margin="0,0,0,8"
+                                      Padding="72,32,48,32"
+                                      BackgroundColor="{StaticResource DarkSecondaryColor}"
+                                      Completed="CustomEntry_Completed"
+                                      CompoundDrawablePadding="48"
+                                      Placeholder="Username"
+                                      PlaceholderColor="DarkGray"
+                                      Text="{Binding Username, Mode=TwoWay}"
+                                      TextColor="{StaticResource DarkTertiaryColor}">
+
+                    <controls:CustomEntry.Behaviors>
+
+                        <hlp:EventToCommandBehavior Command="{Binding EntryTextChangedCommand}"
+                                                    EventName="TextChanged" />
+
+                    </controls:CustomEntry.Behaviors>
+
+                </controls:CustomEntry>
+
+                <Grid>
+
+                    <controls:CustomEntry x:Name="passwordEntry" ReturnType="Done"
+                                          Padding="72,32,48,32"
+                                          BackgroundColor="{StaticResource DarkSecondaryColor}"
+                                          Completed="CustomEntry_Completed"
+                                          CompoundDrawablePadding="48"
+                                          EyeSlashIcon="eye_slash"
+                                          EyeVisibleIcon="eye_visible"
+                                          IsPassword="True"
+                                          Placeholder="Password"
+                                          PlaceholderColor="DarkGray"
+                                          Text="{Binding Password, Mode=TwoWay}"
+                                          TextColor="{StaticResource DarkTertiaryColor}">
+
+                        <controls:CustomEntry.Behaviors>
+
+                            <hlp:EventToCommandBehavior Command="{Binding EntryTextChangedCommand}"
+                                                        EventName="TextChanged" />
+
+                        </controls:CustomEntry.Behaviors>
+
+                    </controls:CustomEntry>
+
+                </Grid>
+
+            </StackLayout>
+
+            <Button Margin="0,8"
+                    Padding="24,0"
+                    BackgroundColor="{StaticResource DarkSecondaryColor}"
+                    Command="{Binding ActionButtonClickCommand}"
+                    FontSize="16"
+                    HorizontalOptions="End"
+                    IsEnabled="{Binding IsActionButtonEnabled}"
+                    Style="{StaticResource DefaultButtonStyle}"
+                    Text="Login"
+                    TextTransform="Uppercase" />
+
+        </StackLayout>
+
+    </ContentPage.Content>
+
+</ContentPage>

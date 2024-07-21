@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFmpegBind", "FFmpegBind\FFmpegBind.csproj", "{3632D3F3-FCC6-463A-AAE8-7C614254900A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloaderAppMobile", "DownloaderAppMobile\DownloaderAppMobile\DownloaderAppMobile.csproj", "{D2EAAF4C-769F-4B8E-8E57-A01345DA4EDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloaderAppMobile.Android", "DownloaderAppMobile\DownloaderAppMobile.Android\DownloaderAppMobile.Android.csproj", "{CD01A4BA-16BA-4DCB-AC66-426392F0C207}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3632D3F3-FCC6-463A-AAE8-7C614254900A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3632D3F3-FCC6-463A-AAE8-7C614254900A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3632D3F3-FCC6-463A-AAE8-7C614254900A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3632D3F3-FCC6-463A-AAE8-7C614254900A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2EAAF4C-769F-4B8E-8E57-A01345DA4EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2EAAF4C-769F-4B8E-8E57-A01345DA4EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2EAAF4C-769F-4B8E-8E57-A01345DA4EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2EAAF4C-769F-4B8E-8E57-A01345DA4EDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD01A4BA-16BA-4DCB-AC66-426392F0C207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD01A4BA-16BA-4DCB-AC66-426392F0C207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD01A4BA-16BA-4DCB-AC66-426392F0C207}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CD01A4BA-16BA-4DCB-AC66-426392F0C207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD01A4BA-16BA-4DCB-AC66-426392F0C207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD01A4BA-16BA-4DCB-AC66-426392F0C207}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5941C09F-4CC9-4F91-BDE5-9CEC962CC4C4}
+	EndGlobalSection
+EndGlobal

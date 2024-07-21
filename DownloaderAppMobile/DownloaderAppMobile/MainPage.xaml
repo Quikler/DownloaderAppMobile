@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FlyoutPage x:Class="DownloaderAppMobile.MainPage"
+            xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:ctrls="clr-namespace:DownloaderAppMobile.Controls"
+            xmlns:hlp="clr-namespace:DownloaderAppMobile.Helpers"
+            xmlns:local="clr-namespace:DownloaderAppMobile"
+            xmlns:view="clr-namespace:DownloaderAppMobile.MVVM.View"
+            xmlns:vm="clr-namespace:DownloaderAppMobile.MVVM.ViewModel"
+            IsPresented="{Binding IsFlyoutPresented, Mode=TwoWay}">
+
+    <FlyoutPage.BindingContext>
+
+        <vm:MainVM />
+
+    </FlyoutPage.BindingContext>
+
+    <FlyoutPage.Flyout>
+
+        <view:FlyoutView />
+
+    </FlyoutPage.Flyout>
+
+    <FlyoutPage.Detail>
+
+        <CarouselPage>
+
+            <CarouselPage.Behaviors>
+
+                <hlp:EventToCommandBehavior Command="{Binding CurrentPageChangedCommand}"
+                                            EventName="CurrentPageChanged" />
+
+            </CarouselPage.Behaviors>
+
+            <view:YoutubeView />
+
+            <view:InstagramView />
+
+            <view:InstagramLoginView />
+
+        </CarouselPage>
+
+    </FlyoutPage.Detail>
+
+</FlyoutPage>

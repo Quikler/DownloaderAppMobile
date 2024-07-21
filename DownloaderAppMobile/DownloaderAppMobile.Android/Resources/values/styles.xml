@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+
+	<style name="MainTheme" parent="MainTheme.Base">
+		
+		<!--list view properties-->
+		<item name="android:colorPressedHighlight">@color/colorPrimaryDark</item>
+		<item name="android:colorFocusedHighlight">@color/colorPrimaryDark</item>
+		<item name="android:colorActivatedHighlight">@color/colorPrimaryDark</item>
+		<item name="android:activatedBackgroundIndicator">@color/colorPrimaryDark</item>
+		
+		<!--status bar and navigation bar colors-->
+		<item name="android:statusBarColor">@color/DarkTertiaryColor</item>
+		<item name="android:navigationBarColor">@color/DarkPrimaryColor</item>
+		
+		<!--splash screen properties-->
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowActionBar">true</item>
+		<item name="android:windowBackground">@drawable/splash_screen</item>
+	</style>
+
+</resources>

@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="DownloaderAppMobile.MVVM.View.YoutubeView"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DownloaderAppMobile.Controls"
+             xmlns:hlp="clr-namespace:DownloaderAppMobile.Helpers"
+             xmlns:model="clr-namespace:DownloaderAppMobile.MVVM.Model"
+             xmlns:vm="clr-namespace:DownloaderAppMobile.MVVM.ViewModel"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             BackgroundColor="{StaticResource DarkPrimaryColor}">
+
+    <ContentPage.BindingContext>
+
+        <vm:YoutubeVM />
+
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+
+        <StackLayout Margin="16,8">
+
+            <StackLayout Margin="0,8,0,0"
+                         Orientation="Horizontal">
+
+                <Button BackgroundColor="{StaticResource DarkSecondaryColor}"
+                        Command="{Binding OpenSocialMediaCommand}"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Open youtube"
+                        TextColor="{StaticResource DarkTertiaryColor}" />
+
+            </StackLayout>
+
+            <Grid Margin="0,8">
+
+                <Image HeightRequest="128"
+                       HorizontalOptions="Center"
+                       Source="youtube"
+                       WidthRequest="128" />
+
+                <ImageButton BackgroundColor="Transparent"
+                             Command="{Binding ClipboardClickCommand}"
+                             HorizontalOptions="End"
+                             Source="clipboard"
+                             VerticalOptions="End" />
+
+                <ActivityIndicator HorizontalOptions="Start"
+                                   IsRunning="{Binding IsActivityIndicatorRunning}"
+                                   VerticalOptions="End"
+                                   Color="{StaticResource DarkSecondaryColor}" />
+
+            </Grid>
+
+            <controls:CustomEntry Padding="48,32"
+                                  BackgroundColor="{StaticResource DarkSecondaryColor}"
+                                  CompoundDrawablePadding="48"
+                                  LeftIcon="magnifier_glass"
+                                  Placeholder="Enter download url"
+                                  PlaceholderColor="DarkGray"
+                                  RightIcon="close_icon"
+                                  Text="{Binding EntryText, Mode=TwoWay}"
+                                  TextColor="{StaticResource DarkTertiaryColor}">
+
+                <controls:CustomEntry.Behaviors>
+
+                    <hlp:EventToCommandBehavior Command="{Binding EntryTextChangedCommand}"
+                                                EventName="TextChanged" />
+
+                </controls:CustomEntry.Behaviors>
+
+            </controls:CustomEntry>
+
+            <StackLayout Margin="0,8"
+                         HorizontalOptions="End"
+                         Orientation="Horizontal"
+                         Spacing="8">
+
+                <Picker Title="Media types"
+                        BackgroundColor="{StaticResource DarkSecondaryColor}"
+                        FontSize="16"
+                        HorizontalTextAlignment="Center"
+                        IsEnabled="{Binding IsPickerEnabled}"
+                        ItemDisplayBinding="{Binding Title}"
+                        ItemsSource="{Binding MediaTypes}"
+                        SelectedIndex="{Binding SelectedMediaTypeIndex}"
+                        TextColor="{StaticResource DarkTertiaryColor}"
+                        TextTransform="Uppercase">
+
+                    <Picker.Style>
+
+                        <Style TargetType="Picker">
+
+                            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                                <VisualStateGroupList>
+
+                                    <VisualStateGroup x:Name="CommonStates">
+
+                                        <VisualState x:Name="Normal">
+
+                                            <VisualState.Setters>
+
+                                                <Setter Property="TextColor" Value="{StaticResource DarkTertiaryColor}" />
+
+                                            </VisualState.Setters>
+
+                                        </VisualState>
+
+                                        <VisualState x:Name="Disabled">
+
+                                            <VisualState.Setters>
+
+                                                <Setter Property="TextColor" Value="DarkGray" />
+
+                                            </VisualState.Setters>
+
+                                        </VisualState>
+
+                                    </VisualStateGroup>
+
+                                </VisualStateGroupList>
+
+                            </Setter>
+
+                        </Style>
+
+                    </Picker.Style>
+
+                    <Picker.Effects>
+
+                        <xct:RemoveBorderEffect />
+
+                    </Picker.Effects>
+
+                </Picker>
+
+                <Button Padding="24,0"
+                        BackgroundColor="{StaticResource DarkSecondaryColor}"
+                        Command="{Binding ActionButtonClickCommand}"
+                        FontSize="16"
+                        HorizontalOptions="End"
+                        IsEnabled="{Binding IsActionButtonEnabled, Mode=TwoWay}"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Text="Download"
+                        TextColor="{StaticResource DarkTertiaryColor}"
+                        TextTransform="Uppercase" />
+
+            </StackLayout>
+
+            <Frame Padding="0"
+                   xct:ShadowEffect.Color="Black"
+                   BackgroundColor="{StaticResource DarkTertiaryColor}"
+                   BorderColor="Black">
+
+                <StackLayout>
+
+                    <xct:MediaElement BackgroundColor="{StaticResource DarkTertiaryColor}"
+                                      HeightRequest="300"
+                                      KeepScreenOn="True"
+                                      Source="{Binding MediaSource}" />
+
+                </StackLayout>
+
+            </Frame>
+
+        </StackLayout>
+
+    </ContentPage.Content>
+
+</ContentPage>
