@@ -79,21 +79,42 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             }
 
             SetProperties(false);
-
-            IResult<bool> result;
-            if (DownloadButtonText == Phrases.PREVIEW)
+            
+            try
             {
-                result = await LoadPreview(EntryText);
-                DownloadButtonText = result.Succeeded ? Phrases.DOWNLOAD : Phrases.PREVIEW;
+                if (DownloadButtonText == Phrases.PREVIEW)
+                {
+                    var result = await LoadPreview(EntryText);
+                    DownloadButtonText = result.Succeeded ? Phrases.DOWNLOAD : Phrases.PREVIEW;
+                    return;
+                }
+
+                var downloadResult = await DownloadSelected();
+                if (!downloadResult.Succeeded)
+                {
+                    await Page.DisplayAlert(Phrases.INSTAGRAM, downloadResult.Info.Message, Phrases.OK);
+                    return;
+                }
+
+                var stream = downloadResult.Value;
+                byte[] thumbnail;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    thumbnail = ms.ToArray();
+                }
+
+                DependencyService.Get<ILocalNotificationsService>().ShowNotification(
+                    Phrases.INSTAGRAM, "All selected medias has been downloaded", thumbnail);
             }
-            else
+            catch (Exception ex)
             {
-                result = await DownloadSelected();
+                _ = Page.DisplayAlert(Phrases.INSTAGRAM, ex.Message, Phrases.OK);
             }
-
-            _ = Page.DisplayAlert(Phrases.INSTAGRAM, result.Info.Message, Phrases.OK);
-
-            SetProperties(true);
+            finally
+            {
+                SetProperties(true);
+            }
         }
 
         protected override bool ActionButtonClickCommandCanExecute(object parameter)
@@ -110,7 +131,10 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             
             if (!infosResult.Succeeded && !await AcceptChallangeIfRequired(infosResult))
             {
-                return Result.Fail(infosResult.Info.Message, false);
+                // Error getting media
+                return infosResult.Info.Message.Contains("Error parsing NaN value") ?
+                    Result.Fail("Media is private. Cannot get media from private channels.", false) :
+                    Result.Fail(infosResult.Info.Message, false);
             }
 
             var infos = Model.Infos = infosResult.Value;
@@ -144,11 +168,11 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             return Result.Success("Preview loaded successfully", true);
         }
 
-        private async Task<IResult<bool>> DownloadSelected()
+        private async Task<IResult<Stream>> DownloadSelected()
         {
             if (SelectedViews.Count <= 0)
             {
-                return Result.Fail("Nothing selected. Make sure to select at least 1 media to download", false);
+                return Result.Fail("Nothing selected. Make sure to select at least 1 media to download", Stream.Null);
             }
 
             List<InstaMediaInfo> filteredInfos = new List<InstaMediaInfo>();
@@ -167,7 +191,7 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             var streamsResult = await Model.InstagramService.StreamProcessor.GetMediaStreamsAsync(filteredInfos);
             if (!streamsResult.Succeeded)
             {
-                return Result.Fail(streamsResult.Info.Message, false);
+                return Result.Fail(streamsResult.Info.Message, Stream.Null);
             }
 
             var streams = streamsResult.Value;
@@ -178,8 +202,8 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             string suitableFolder;
 
             IFileService fileService = DependencyService.Get<IFileService>();
-            await fileService.RequestPermissionAsync<Permissions.Photos>();
-            await fileService.RequestPermissionAsync<Permissions.Media>();
+            //await fileService.RequestPermissionAsync<Permissions.Photos>();
+            //await fileService.RequestPermissionAsync<Permissions.Media>();
 
             string guid = Guid.NewGuid().ToString();
             for (int i = 0; i < streams.Count(); i++)
@@ -199,11 +223,11 @@ namespace DownloaderAppMobile.MVVM.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    return Result.Fail(ex.Message, false);
+                    return Result.Fail(ex.Message, Stream.Null);
                 }
             }
 
-            return Result.Success("All selected media has been downloaded", true);
+            return Result.Success("All selected media has been downloaded", streams.First().Stream);
         }
 
         private async Task<bool> AcceptChallangeIfRequired<T>(IResult<T> result)

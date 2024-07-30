@@ -35,11 +35,11 @@ namespace DownloaderAppMobile.MVVM.Model
             var data = File.ReadAllText(AccountSessionFilePath);
             if (data.Length == 0)
             {
-                IInstaApi instaApi = InstaApiBuilder.CreateBuilder().SetSessionHandler(new FileSessionHandler
-                {
-                    FilePath = AccountSessionFilePath
-                }).UseLogger(new DebugLogger(LogLevel.Exceptions))
-                   .Build();
+                IInstaApi instaApi = InstaApiBuilder
+                    .CreateBuilder()
+                    .SetSessionHandler(new FileSessionHandler { FilePath = AccountSessionFilePath })
+                    .UseLogger(new DebugLogger(LogLevel.Exceptions))
+                    .Build();
 
                 InstagramService = new InstaService(instaApi);
             }
