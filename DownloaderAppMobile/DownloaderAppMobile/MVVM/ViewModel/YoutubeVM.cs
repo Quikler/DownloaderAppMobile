@@ -41,6 +41,14 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             set { RaiseAndSetIfChanged(ref _isPickerEnabled, value); }
         }
 
+        private bool _isPreviewCheckBoxChecked;
+        public bool IsPreviewCheckBoxChecked
+        {
+            get { return _isPreviewCheckBoxChecked; }
+            set { _isPreviewCheckBoxChecked = value; }
+        }
+
+
         public YoutubeVM()
         {
             Model = new YoutubeModel();
@@ -61,10 +69,11 @@ namespace DownloaderAppMobile.MVVM.ViewModel
 
             try
             {
-                IStreamInfo streamInfo;
-                Video video;
-                StreamManifest manifest;
+                IStreamInfo streamInfo = null;
+                Video video = null;
+                StreamManifest manifest = null;
 
+// Determine if the exact same video is already taken
                 if (Model.Info.HasValue && EntryText.Contains(Model.Info.Value.video.Id))
                 {
                     video = Model.Info.Value.video;
@@ -83,30 +92,52 @@ namespace DownloaderAppMobile.MVVM.ViewModel
                     video = Model.Info.Value.video;
                     manifest = Model.Info.Value.manifest;
 
-                    streamInfo = Model.StreamInfo = manifest.GetMuxedStreams().GetWithHighestVideoQuality();
-                    MediaSource = streamInfo.Url;
+// If checkbox checked get video preview
+                    if (IsPreviewCheckBoxChecked)
+                    {
+                        streamInfo = Model.StreamInfo = manifest.GetMuxedStreams().GetWithHighestVideoQuality();
+                        MediaSource = streamInfo.Url;
+                    }
                 }
 
                 bool isAudio = MediaTypes[SelectedMediaTypeIndex].MediaType == MediaType.Audio;
-                if (isAudio)
-                {
-                    streamInfo = manifest.GetAudioOnlyStreams().GetWithHighestBitrate();
-                }
-
-                string tempVideoFilePath = await YoutubeHelper.DownloadToTempAsync(streamInfo);
+                streamInfo = isAudio
+                    ? manifest.GetAudioOnlyStreams().GetWithHighestBitrate()
+                    : streamInfo ?? manifest.GetMuxedStreams().GetWithHighestVideoQuality();
 
                 (string mediaType, string folder, string extenstion, FFmpegOptions options) =
-                    await PrepareDownloadOptionsAsync(video, isAudio);
+                    await PrepareDownloadOptionsAsync(video, isAudio, false);
 
                 string destinationFilePath = Path.Combine(folder, $"{options.Title}{extenstion}");
 
+                if (File.Exists(destinationFilePath))
+                {
+                    var accepted = await Page.DisplayAlert(
+                        Phrases.YOUTUBE,
+                        $"File with name: '{options.Title}' already exist. You wanna override it?",
+                        Phrases.YES,
+                        Phrases.NO
+                    );
+
+                    if (!accepted)
+                    {
+                        SetProperties(true);
+                        return;
+                    }
+                }
+
+                options.Thumbnail = await YoutubeHelper.GetThumbnailBytesAsync(video.Thumbnails.GetWithHighestResolution().Url);
+
                 IFFmpeg ffmpeg = DependencyService.Get<IFFmpeg>();
+
+                string tempVideoFilePath = await YoutubeHelper.DownloadToTempAsync(streamInfo);
                 Task createMediaTask = isAudio
                     ? ffmpeg.CreateAudioAsync(destinationFilePath, tempVideoFilePath, options, true)
                     : ffmpeg.CreateVideoAsync(destinationFilePath, tempVideoFilePath, options, true);
                 await createMediaTask;
 
                 DependencyService.Get<IFileService>().ScanFile(destinationFilePath);
+
                 _ = Page.DisplayAlert(Phrases.YOUTUBE, $"{mediaType} downloaded: \"{video.Title}\"", Phrases.OK);
                 DependencyService.Get<ILocalNotificationsService>()
                     .ShowNotification(video.Title, $"{mediaType} downloaded", options.Thumbnail);
@@ -135,7 +166,7 @@ namespace DownloaderAppMobile.MVVM.ViewModel
         }
 
         private async Task<(string mediaType, string folder, string extension, FFmpegOptions options)> PrepareDownloadOptionsAsync(
-            Video video, bool isAudio)
+            Video video, bool isAudio, bool grabThumbnail = false)
         {
             string mediaType = isAudio ? "Audio" : "Video";
             string extension = isAudio ? ".mp3" : ".mp4";
@@ -145,7 +176,10 @@ namespace DownloaderAppMobile.MVVM.ViewModel
                 folderService.CreateFolder("Music", "DownloaderApp") :
                 folderService.CreateFolder("Movies", "DownloaderApp");
 
-            var thumbnail = await YoutubeHelper.GetThumbnailBytesAsync(video.Thumbnails.GetWithHighestResolution().Url);
+            var thumbnail = grabThumbnail 
+                ? await YoutubeHelper.GetThumbnailBytesAsync(video.Thumbnails.GetWithHighestResolution().Url) 
+                : null;
+
             var options = new FFmpegOptions
             {
                 Author = PathHelper.CreateValidFileName(video.Author.ChannelTitle),

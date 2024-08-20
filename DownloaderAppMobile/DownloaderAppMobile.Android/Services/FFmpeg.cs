@@ -57,7 +57,7 @@ namespace DownloaderAppMobile.Droid
             try
             {
                 // create valid front cover for audio
-                File.WriteAllBytes(tempCoverFilePath, options.Thumbnail);
+                await File.WriteAllBytesAsync(tempCoverFilePath, options.Thumbnail);
 
                 string command = string.Format(VIDEO_TO_AUDIO_METADATA_FORMAT, tempVideoFilePath, tempCoverFilePath,
                     string.Format(DEFAULT_METADATA_FORMAT, new object[]
@@ -69,7 +69,11 @@ namespace DownloaderAppMobile.Droid
                         options.AlbumArtist
                     }), destinationFilePath);
 
-                File.Create(destinationFilePath).Dispose();
+                if (!File.Exists(destinationFilePath))
+                {
+                    File.Create(destinationFilePath).Dispose();
+                }
+
                 await ExecuteAsync(command, cancellationToken);
             }
             finally
@@ -97,7 +101,11 @@ namespace DownloaderAppMobile.Droid
                         options.AlbumArtist
                     }), destinationFilePath);
 
-                File.Create(destinationFilePath).Dispose();
+                if (!File.Exists(destinationFilePath))
+                {
+                    File.Create(destinationFilePath).Dispose();
+                }
+
                 await ExecuteAsync(command, cancellationToken);
             }
             finally

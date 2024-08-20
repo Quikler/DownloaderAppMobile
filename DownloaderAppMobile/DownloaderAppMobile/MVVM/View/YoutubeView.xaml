@@ -74,6 +74,12 @@
                          Orientation="Horizontal"
                          Spacing="8">
 
+                <CheckBox Margin="0,0,8,0"
+                          HorizontalOptions="StartAndExpand"
+                          IsChecked="{Binding IsPreviewCheckBoxChecked}"
+                          ScaleX="2"
+                          ScaleY="2" />
+
                 <Picker Title="Media types"
                         BackgroundColor="{StaticResource DarkSecondaryColor}"
                         FontSize="16"

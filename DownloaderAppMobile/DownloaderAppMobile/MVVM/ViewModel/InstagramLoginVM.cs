@@ -109,12 +109,16 @@ namespace DownloaderAppMobile.MVVM.ViewModel
                 .SetUser(new UserSessionData { UserName = username, Password = password })
                 .Build();
 
+            await instaApi.SendRequestsBeforeLoginAsync();
+
             var loginResult = await instaApi.LoginAsync();
 
             if (!loginResult.Succeeded)
             {
                 return Result.Fail(loginResult.Info, false);
             }
+
+            await instaApi.SendRequestsAfterLoginAsync();
 
             instaApi.SessionHandler.Save(false);
             _instagramModel.InstagramService = new InstaService(instaApi);

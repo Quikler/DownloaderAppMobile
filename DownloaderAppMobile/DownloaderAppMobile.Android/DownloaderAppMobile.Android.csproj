@@ -98,9 +98,9 @@
     <AndroidResource Include="Resources\drawable\magnifier_glass.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\FFmpegBind\FFmpegBind.csproj">
-      <Project>{3632D3F3-FCC6-463A-AAE8-7C614254900A}</Project>
-      <Name>FFmpegBind</Name>
+    <ProjectReference Include="..\..\FFmegBind\FFmegBind.csproj">
+      <Project>{4b5f4762-67ac-4bb1-9bb8-7964be6df090}</Project>
+      <Name>FFmegBind</Name>
     </ProjectReference>
     <ProjectReference Include="..\DownloaderAppMobile\DownloaderAppMobile.csproj">
       <Project>{7fc6790b-b565-41d9-aa95-1f778e89d34b}</Project>
