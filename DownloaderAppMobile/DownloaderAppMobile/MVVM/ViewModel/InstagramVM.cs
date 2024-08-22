@@ -85,7 +85,13 @@ namespace DownloaderAppMobile.MVVM.ViewModel
                 if (DownloadButtonText == Phrases.PREVIEW)
                 {
                     var result = await LoadPreview(EntryText);
-                    DownloadButtonText = result.Succeeded ? Phrases.DOWNLOAD : Phrases.PREVIEW;
+                    if (!result.Succeeded)
+                    {
+                        DownloadButtonText = Phrases.PREVIEW;
+                        await Page.DisplayAlert(Phrases.INSTAGRAM, result.Info.Message, Phrases.OK);
+                        return;
+                    }
+                    DownloadButtonText = Phrases.DOWNLOAD;
                     return;
                 }
 
@@ -129,14 +135,19 @@ namespace DownloaderAppMobile.MVVM.ViewModel
 
             var infosResult = await Model.InstagramService.MediaProcessor.GetInfosAsync(url);
             
-            if (!infosResult.Succeeded && !await AcceptChallangeIfRequired(infosResult))
+            if (await AcceptChallangeIfRequired(infosResult))
             {
-                // Error getting media
+                infosResult = await Model.InstagramService.MediaProcessor.GetInfosAsync(url);
+            }
+
+            if (!infosResult.Succeeded)
+            {
+// Error getting media
                 return infosResult.Info.Message.Contains("Error parsing NaN value") ?
                     Result.Fail("Media is private. Cannot get media from private channels.", false) :
                     Result.Fail(infosResult.Info.Message, false);
             }
-
+ 
             var infos = Model.Infos = infosResult.Value;
             for (int i = 0; i < infos.Count(); i++)
             {
@@ -205,13 +216,12 @@ namespace DownloaderAppMobile.MVVM.ViewModel
             //await fileService.RequestPermissionAsync<Permissions.Photos>();
             //await fileService.RequestPermissionAsync<Permissions.Media>();
 
-            string guid = Guid.NewGuid().ToString();
             for (int i = 0; i < streams.Count(); i++)
             {
                 var currentStream = streams.ElementAt(i);
                 suitableFolder = currentStream.MediaType == InstaMediaType.Image ? picturesFolder : moviesFolder;
 
-                string fileName = $"{currentStream.InstaMedia.Code}-{i}-{guid}";
+                string fileName = $"{currentStream.InstaMedia.Code}-{i}";
                 if (File.Exists(Path.Combine(suitableFolder, fileName)))
                     continue;
 

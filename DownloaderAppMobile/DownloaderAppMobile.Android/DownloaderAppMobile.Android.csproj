@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FFmpegBind\FFmpegBind.csproj">
-      <Project>{3632D3F3-FCC6-463A-AAE8-7C614254900A}</Project>
+      <Project>{b1bd738f-d016-457d-877c-7ff4988be9a9}</Project>
       <Name>FFmpegBind</Name>
     </ProjectReference>
     <ProjectReference Include="..\DownloaderAppMobile\DownloaderAppMobile.csproj">
