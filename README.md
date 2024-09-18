@@ -34,15 +34,11 @@ Go to [Releases](https://github.com/Quikler/DownloaderAppMobile/releases/) and c
 
 ### _Instagram:_
 
-Paste link into field | Click "Preview" button | Select medias and click "Download"
-:--------------------:|:----------------------:|:---------------------------------:
-<img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/instagram-1.jpg" height="600" /> | <img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/instagram-2.jpg" height="600" /> | <img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/instagram-3.jpg" height="600" />
+<img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/instagram-1.jpg"  />
 
 ### _Youtube:_
 
-Paste link into field | Select media type and Click "Download"
-:--------------------:|:---------------:
-<img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/youtube-1.jpg" height="600" /> | <img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/youtube-2.jpg" height="600" />
+<img src="https://github.com/Quikler/DownloaderAppMobile/blob/master/.assets/youtube-1.jpg" />
 
 ## Support
 
