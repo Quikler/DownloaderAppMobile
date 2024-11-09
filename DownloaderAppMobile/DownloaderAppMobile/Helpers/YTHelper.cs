@@ -6,12 +6,13 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using YoutubeExplode;
+using YoutubeExplode.Common;
 using YoutubeExplode.Videos;
 using YoutubeExplode.Videos.Streams;
 
 namespace DownloaderAppMobile.Helpers
 {
-    public static class YoutubeHelper
+    public static class YTHelper
     {
         public static YoutubeClient Client { get; } = new YoutubeClient();
 
@@ -35,6 +36,8 @@ namespace DownloaderAppMobile.Helpers
                 return await hc.GetByteArrayAsync(thumbnailUrl);
             }
         }
+
+        public static Task<byte[]> GetThumbnailBytesAsync(Thumbnail thumbnail) => GetThumbnailBytesAsync(thumbnail.Url);
 
         public static async Task<string> DownloadToTempAsync(
             IStreamInfo streamInfo, CancellationToken cancellationToken = default)
